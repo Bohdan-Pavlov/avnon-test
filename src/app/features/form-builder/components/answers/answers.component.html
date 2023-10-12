@@ -1,0 +1,6 @@
+<div *ngFor="let question of questions$ | async; let i = index">
+    <h2 class="title">{{ question.question }}</h2>
+    <div class="answer">{{ getAnswer(i) }}</div>
+</div>
+
+<button (click)="goBack()">{{ backButtonText }}</button>

@@ -1,0 +1,48 @@
+<div class="add-question">
+    <h2 class="title">{{ title }}</h2>
+
+    <form class="form" [formGroup]="addQuestionForm" (ngSubmit)="onSubmit($event)">
+
+        <select
+            class="form__field"
+            formControlName="questionType">
+            <option
+                *ngFor="let questionType of questionTypes"
+                [value]="questionType.value"
+            >
+                {{ questionType.viewValue }}
+            </option>
+        </select>
+
+        <input
+            class="form__field"
+            type="text"
+            [placeholder]="questionFieldPlaceholder"
+            formControlName="question">
+
+        <div class="answers" formArrayName="answerOptions" *ngIf="questionType.value === 'checkbox'">
+            <input
+                class="form__field"
+                *ngFor="let answer of answerOptions.controls; let i = index"
+                [formControlName]="i"
+                [placeholder]="addAnswerOptionFieldPlaceholder"/>
+        </div>
+
+        <button
+            type="button"
+            *ngIf="questionType.value === 'checkbox' && answerOptions.length < 5"
+            (click)="addAnswerOption()"
+        >{{ addAnswerButtonText }}</button>
+
+        <div class="additional-fields">
+            <ng-container *ngFor="let checkbox of checkboxes">
+                <label class="checkbox-label" *ngIf="checkbox.isVisible">
+                    <input type="checkbox" [formControlName]="checkbox.formControlName">
+                    {{ checkbox.label }}
+                </label>
+            </ng-container>
+        </div>
+
+        <button [disabled]="addQuestionForm.invalid">{{ submitButtonText }}</button>
+    </form>
+</div>

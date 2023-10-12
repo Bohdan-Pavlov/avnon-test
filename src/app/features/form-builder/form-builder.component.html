@@ -1,0 +1,31 @@
+<form class="questions" [formGroup]="questionsForm" (ngSubmit)="showAnswers()">
+
+    <div formArrayName="answers">
+        <div *ngFor="let fg of answers.controls; let i = index">
+            <div [formGroupName]="i">
+                    <h2 class="question__title">{{ questions[i].question }}</h2>
+
+                    <textarea *ngIf="questions[i].questionType === 'paragraph'" formControlName="answer" class="question__field"></textarea>
+
+                    <div formArrayName="answer" *ngIf="questions[i].answerOptions">
+                        <div class="checkboxes">
+                            <label *ngFor="let answer of questions[i].answerOptions; let i = index">
+                                <input type="checkbox" [formControlName]="i">
+                                {{ answer }}
+                            </label>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="button" (click)="openAddQuestionModal()">{{ addNewQuestionButtonText }}</button>
+        <button type="submit">{{ reviewAnswersButtonText }}</button>
+    </div>
+</form>
+
+<app-add-question-modal
+    *ngIf="isAddQuestionModalOpened"
+    (modalClosed)="closeAddQuestionModal()"
+></app-add-question-modal>
